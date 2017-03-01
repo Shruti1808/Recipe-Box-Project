@@ -60,6 +60,23 @@ namespace RecipeBox
             Assert.Equal(testCategory,newCategory);
         }
 
+        [Fact]
+       public void Test_Update_UpdateCategory()
+       {
+           //Arrange
+           string name = "Mexican";
+           Category testCategory = new Category(name);
+           testCategory.Save();
+           string newName = "Indian";
+
+           //Act
+           testCategory.Update(newName);
+           string result = testCategory.GetName();
+
+           //Assert
+           Assert.Equal(result, newName);
+       }
+
         public void Dispose()
         {
             Category.DeleteAll();
