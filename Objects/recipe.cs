@@ -139,16 +139,61 @@ namespace RecipeBox
             }
         }
 
-        public static void DeleteAll()
+        public static  Recipe Find(int id)
         {
             SqlConnection conn = DB.Connection();
             conn.Open();
-            SqlCommand cmd = new SqlCommand("DELETE FROM recipe;", conn);
-            cmd.ExecuteNonQuery();
-            conn.Close();
+
+            SqlCommand cmd  = new SqlCommand("SELECT * FROM recipe WHERE id= @RecipeId;", conn);
+
+            SqlParameter idParam = new SqlParameter();
+            idParam.ParameterName = "@RecipeId";
+            idParam.Value = id.ToString();
+            cmd.Parameters.Add(idParam);
+
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            int foundRecipeId = 0;
+            string foundName = null;
+            string foundIngredients = null;
+            string foundInstructions = null;
+            string foundCookTime = null;
+            int foundRating = 0;
+
+            while(rdr.Read())
+            {
+                foundRecipeId = rdr.GetInt32(0);
+                foundName = rdr.GetString(1);
+                foundIngredients = rdr.GetString(2);
+                foundInstructions = rdr.GetString(3);
+                foundCookTime = rdr.GetString(4);
+                foundRating = rdr.GetInt32(5);
+            }
+
+            Recipe foundRecipe = new Recipe(foundName, foundIngredients, foundInstructions, foundCookTime, foundRating, foundRecipeId);
+            if (rdr != null)
+            {
+                rdr.Close();
+            }
+            if (conn != null)
+            {
+                conn.Close();
+            }
+
+            return foundRecipe;
         }
 
 
-
+    public static void DeleteAll()
+    {
+        SqlConnection conn = DB.Connection();
+        conn.Open();
+        SqlCommand cmd = new SqlCommand("DELETE FROM recipe;", conn);
+        cmd.ExecuteNonQuery();
+        conn.Close();
     }
+
+
+    
+  }
 }

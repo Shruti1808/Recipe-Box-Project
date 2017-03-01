@@ -44,6 +44,16 @@ namespace RecipeBox
         Assert.Equal(testId, result);
     }
 
+    [Fact]
+    public void Test_FindRecipe_ReturnsSameObject()
+    {
+        Recipe newRecipe = new Recipe("Chicken Tandoori","Chicken,Onions,Tomato", "Roast Chicken", "30 minutes", 5);
+        newRecipe.Save();
+
+        Recipe testRecipe = Recipe.Find(newRecipe.GetId());
+        Assert.Equal(testRecipe,newRecipe);
+    }
+
     public void Dispose()
     {
         Recipe.DeleteAll();
