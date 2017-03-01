@@ -183,6 +183,47 @@ namespace RecipeBox
             return foundRecipe;
         }
 
+    public void Update(string newName, string newIngredients, string newInstructions, string newCookTime, int newRating)
+    {
+        SqlConnection conn = DB.Connection();
+        conn.Open();
+
+        SqlCommand cmd = new SqlCommand("UPDATE recipe SET name = @NewName, ingredients = @NewIngredients, instructions = @NewInstructions, cook_time = @NewCookTime, rating = @NewRating OUTPUT INSERTED.* WHERE id = @RecipeId;", conn);
+
+        SqlParameter newNameParam = new SqlParameter("@NewName", newName);
+        SqlParameter newIngredientsParam = new SqlParameter("@NewIngredients", newIngredients);
+        SqlParameter newInstructionsParam = new SqlParameter("@NewInstructions", newInstructions);
+        SqlParameter newCookTimeParam = new SqlParameter("@NewCookTime", newCookTime);
+        SqlParameter newRatingParam = new SqlParameter("@NewRating", newRating);
+        SqlParameter idParam = new SqlParameter("@RecipeId", this.GetId());
+
+        cmd.Parameters.Add(newNameParam);
+        cmd.Parameters.Add(newIngredientsParam);
+        cmd.Parameters.Add(newInstructionsParam);
+        cmd.Parameters.Add(newCookTimeParam);
+        cmd.Parameters.Add(newRatingParam);
+        cmd.Parameters.Add(idParam);
+
+        SqlDataReader rdr = cmd.ExecuteReader();
+
+        while (rdr.Read())
+        {
+            this._id = rdr.GetInt32(0);
+            this._name = rdr.GetString(1);
+            this._ingredients = rdr.GetString(2);
+            this._instructions = rdr.GetString(3);
+            this._cooktime = rdr.GetString(4);
+            this._rating = rdr.GetInt32(5);
+        }
+            if (rdr != null)
+            {
+                rdr.Close();
+            }
+            if (conn != null)
+            {
+                conn.Close();
+            }
+    }
 
     public static void DeleteAll()
     {
@@ -194,6 +235,6 @@ namespace RecipeBox
     }
 
 
-    
+
   }
 }

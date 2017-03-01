@@ -54,6 +54,29 @@ namespace RecipeBox
         Assert.Equal(testRecipe,newRecipe);
     }
 
+    [Fact]
+    public void Test_Update_UpdateRecipe()
+    {
+        string name = "Spaghetti";
+        Recipe testRecipe1 = new Recipe(name, "Noodles, Sauce", "Boil noodles", "20 Minutes", 5);
+        testRecipe1.Save();
+
+        string newName = "Chicken Tandoori";
+        string newIngredients = "Chicken,Onions,Tomato";
+        string newInstructions = "Roast Chicken";
+        string newCookTime = "30 minutes";
+        int newRating = 5;
+
+        testRecipe1.Update(newName, newIngredients, newInstructions, newCookTime, newRating);
+        Recipe actualResult = Recipe.GetAll()[0];
+
+        Assert.Equal(newName, actualResult.GetName());
+        Assert.Equal(newIngredients, actualResult.GetIngredients());
+        Assert.Equal(newInstructions, actualResult.GetInstructions());
+        Assert.Equal(newCookTime, actualResult.GetTime());
+        Assert.Equal(newRating, actualResult.GetRating());
+    }
+
     public void Dispose()
     {
         Recipe.DeleteAll();
