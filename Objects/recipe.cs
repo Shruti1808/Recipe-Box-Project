@@ -225,6 +225,60 @@ namespace RecipeBox
             }
     }
 
+    public void AddCategory(Category newCategory)
+        {
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+
+            SqlCommand cmd  = new SqlCommand("INSERT INTO categories_recipe (recipe_id, category_id) VALUES (@RecipeId, @CategoryId);",conn);
+
+            SqlParameter recipeParameter = new SqlParameter("@RecipeId", this.GetId());
+            SqlParameter categoryParameter = new SqlParameter("@CategoryId", newCategory.GetId());
+
+            cmd.Parameters.Add(recipeParameter);
+            cmd.Parameters.Add(categoryParameter);
+
+            cmd.ExecuteNonQuery();
+
+            if (conn != null)
+            {
+                conn.Close();
+            }
+        }
+
+        public List<Category> GetCategories()
+        {
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("SELECT categories.* FROM recipe JOIN categories_recipe ON (recipe.id= categories_recipe.recipe_id) JOIN categories ON (categories_recipe.category_id = categories.id) WHERE recipe.id = @RecipeId;",conn);
+
+            SqlParameter recipeIdParam = new SqlParameter("@RecipeId", this.GetId().ToString());
+            cmd.Parameters.Add(recipeIdParam);
+
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            List<Category> CategoryList = new List<Category>{};
+
+            while(rdr.Read())
+            {
+                int matchedCategoryId =  rdr.GetInt32(0);
+                string categoryName = rdr.GetString(1);
+                Category newCategory = new Category(categoryName, matchedCategoryId);
+                CategoryList.Add(newCategory);
+            }
+
+            if (rdr != null)
+            {
+                rdr.Close();
+            }
+            if (conn != null)
+            {
+                conn.Close();
+            }
+            return CategoryList;
+        }
+
     public void DeleteRecipe()
     {
       SqlConnection conn = DB.Connection();

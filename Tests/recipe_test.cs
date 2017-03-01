@@ -77,6 +77,28 @@ namespace RecipeBox
         Assert.Equal(newRating, actualResult.GetRating());
     }
 
+        [Fact]
+        public void Test_AddCourse_AddCategoryToRecipe()
+        {
+        Recipe testRecipe = new Recipe("Chicken Tandoori","Chicken,Onions,Tomato", "Roast Chicken", "30 minutes", 5);
+        testRecipe.Save();
+
+        Category testCategory =  new Category("Mexican");
+        testCategory.Save();
+
+        Category testCategory2 = new Category("Italian");
+        testCategory2.Save();
+
+        testRecipe.AddCategory(testCategory);
+        testRecipe.AddCategory(testCategory2);
+
+        List<Category> testList = new List<Category> {testCategory, testCategory2};
+        List<Category> result = testRecipe.GetCategories();
+
+        Assert.Equal(result, testList);
+    }
+
+
     [Fact]
         public void Test_Delete_DeleteSingleRecipe()
         {
@@ -98,6 +120,7 @@ namespace RecipeBox
     public void Dispose()
     {
         Recipe.DeleteAll();
+        Category.DeleteAll();
     }
   }
 }

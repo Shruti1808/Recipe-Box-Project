@@ -98,6 +98,7 @@ namespace RecipeBox
         public void Dispose()
         {
             Category.DeleteAll();
+            Recipe.DeleteAll();
         }
     }
 }
