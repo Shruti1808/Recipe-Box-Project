@@ -30,6 +30,20 @@ namespace RecipeBox
         Assert.Equal(firstRecipe, secondRecipe);
     }
 
+    [Fact]
+    public void Test_Save_AssignsIdToObject()
+    {
+        Recipe testRecipe = new Recipe("Spaghetti", "Noodles, Sauce", "Boil noodles", "20 Minutes", 5);
+
+        testRecipe.Save();
+        Recipe savedRecipe = Recipe.GetAll()[0];
+
+        int result = savedRecipe.GetId();
+        int testId = testRecipe.GetId();
+
+        Assert.Equal(testId, result);
+    }
+
     public void Dispose()
     {
         Recipe.DeleteAll();

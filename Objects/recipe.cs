@@ -104,6 +104,41 @@ namespace RecipeBox
             return RecipeList;
         }
 
+        public void Save()
+        {
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("INSERT into recipe(name, ingredients, instructions, cook_time, rating) OUTPUT INSERTED.id VALUES (@Name, @Ingredients, @Instructions, @CookTime, @Rating);", conn);
+
+            SqlParameter recipeNameParam = new SqlParameter("@Name", this.GetName());
+            SqlParameter recipeIngredientsParam = new SqlParameter("@Ingredients", this.GetIngredients());
+            SqlParameter recipeInstructionsParam = new SqlParameter("@Instructions", this.GetInstructions());
+            SqlParameter recipeCookTimeParam = new SqlParameter("@CookTime", this.GetTime());
+            SqlParameter recipeRatingParam = new SqlParameter("@Rating", this.GetRating());
+
+            cmd.Parameters.Add(recipeNameParam);
+            cmd.Parameters.Add(recipeIngredientsParam);
+            cmd.Parameters.Add(recipeInstructionsParam);
+            cmd.Parameters.Add(recipeCookTimeParam);
+            cmd.Parameters.Add(recipeRatingParam);
+
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            while(rdr.Read())
+            {
+                this._id = rdr.GetInt32(0);
+            }
+            if (rdr != null)
+            {
+                rdr.Close();
+            }
+            if(conn != null)
+            {
+                conn.Close();
+            }
+        }
+
         public static void DeleteAll()
         {
             SqlConnection conn = DB.Connection();
