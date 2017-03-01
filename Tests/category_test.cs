@@ -32,6 +32,24 @@ namespace RecipeBox
             Assert.Equal(firstCategory, secondCategory);
         }
 
+        [Fact]
+        public void Test_Save_AssignsIdToObject()
+        {
+            //Arrange
+
+            Category testCategory = new Category("Italian");
+
+            //Act
+            testCategory.Save();
+            Category savedCategory = Category.GetAll()[0];
+
+            int result = savedCategory.GetId();
+            int testId = testCategory.GetId();
+
+            //Assert
+            Assert.Equal(testId, result);
+        }
+
 
         public void Dispose()
         {
