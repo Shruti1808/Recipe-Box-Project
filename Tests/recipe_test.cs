@@ -77,6 +77,24 @@ namespace RecipeBox
         Assert.Equal(newRating, actualResult.GetRating());
     }
 
+    [Fact]
+        public void Test_Delete_DeleteSingleRecipe()
+        {
+          //Arrange
+          Recipe testRecipe1 = new Recipe("Spaghetti", "Noodles, Sauce", "Boil noodles", "20 Minutes", 5);
+          testRecipe1.Save();
+
+          Recipe testRecipe2 = new Recipe ("Spaghetti", "Noodles, Sauce", "Boil noodles", "20 Minutes", 5);
+          testRecipe2.Save();
+
+          //Act
+          testRecipe1.DeleteRecipe();
+          List<Recipe> result = Recipe.GetAll();
+          List<Recipe> resultList = new List<Recipe> {testRecipe2};
+
+          Assert.Equal(result, resultList);
+        }
+
     public void Dispose()
     {
         Recipe.DeleteAll();
