@@ -245,8 +245,5 @@ namespace RecipeBox
         cmd.ExecuteNonQuery();
         conn.Close();
     }
-
-
-
   }
 }
