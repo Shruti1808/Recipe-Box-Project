@@ -78,6 +78,27 @@ namespace RecipeBox
        }
 
        [Fact]
+       public void Test_AddRecipe_AddRecipeToCategory()
+       {
+           Category testCategory = new Category("Mexican");
+           testCategory.Save();
+
+           Recipe testRecipe = new Recipe("Spaghetti", "Noodles, Sauce", "Boil noodles", "20 Minutes", 5);
+           testRecipe.Save();
+
+           Recipe testRecipe2 = new Recipe("Alfredo", "Noodles, Sauce", "Boil noodles", "20 Minutes", 5);
+           testRecipe2.Save();
+
+           testCategory.AddRecipe(testRecipe);
+           testCategory.AddRecipe(testRecipe2);
+
+           List<Recipe> testList = new List<Recipe> {testRecipe, testRecipe2};
+           List<Recipe> result = testCategory.GetRecipe();
+
+           Assert.Equal(result, testList);
+       }
+
+       [Fact]
            public void Test_Delete_DeleteSingleCategory()
            {
              //Arrange

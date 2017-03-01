@@ -156,26 +156,84 @@ namespace RecipeBox
             {
                 this._name = rdr.GetString(0);
             }
-                if (rdr != null)
-                {
-                    rdr.Close();
-                }
-                if (conn != null)
-                {
-                    conn.Close();
-                }
+            if (rdr != null)
+            {
+                rdr.Close();
+            }
+            if (conn != null)
+            {
+                conn.Close();
+            }
+        }
+
+        public void AddRecipe(Recipe newRecipe)
+        {
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+
+            SqlCommand cmd  =  new SqlCommand ("INSERT INTO categories_recipe (recipe_id,category_id) VALUES (@RecipeId, @CategoryId);",conn);
+
+            SqlParameter categoryParameter = new SqlParameter("@CategoryId", this.GetId());
+            SqlParameter recipeParameter = new SqlParameter ("@RecipeId", newRecipe.GetId());
+
+            cmd.Parameters.Add(categoryParameter);
+            cmd.Parameters.Add(recipeParameter);
+
+            cmd.ExecuteNonQuery();
+            if (conn != null)
+            {
+                conn.Close();
+            }
+        }
+
+        public List<Recipe> GetRecipe()
+        {
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("SELECT recipe.* FROM categories JOIN categories_recipe ON (categories.id = categories_recipe.category_id) JOIN recipe ON(categories_recipe.recipe_id = recipe.id) WHERE categories.id = @CategoryId;", conn);
+
+            SqlParameter categoryParameter = new SqlParameter("@CategoryId", this.GetId().ToString());
+            cmd.Parameters.Add(categoryParameter);
+
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            List<Recipe> RecipeList = new List<Recipe>{};
+
+            while(rdr.Read())
+            {
+                int matchedRecipeId = rdr.GetInt32(0);
+                string matchedrecipeName = rdr.GetString(1);
+                string matchedIngredient = rdr.GetString(2);
+                string matchedInstructions = rdr.GetString(3);
+                string matchedCookTIme =  rdr.GetString(4);
+                int matchedRating = rdr.GetInt32(5);
+                Recipe newRecipe = new Recipe(matchedrecipeName,matchedIngredient,matchedInstructions,matchedCookTIme,matchedRating,matchedRecipeId);
+                RecipeList.Add(newRecipe);
+            }
+
+            if (rdr != null)
+            {
+                rdr.Close();
+            }
+            if (conn != null)
+            {
+                conn.Close();
+            }
+
+            return RecipeList;
         }
 
         public void DeleteCategory()
         {
-          SqlConnection conn = DB.Connection();
-          conn.Open();
+            SqlConnection conn = DB.Connection();
+            conn.Open();
 
-          SqlCommand cmd = new SqlCommand("DELETE FROM categories WHERE id = @CategoryId;", conn);
+            SqlCommand cmd = new SqlCommand("DELETE FROM categories WHERE id = @CategoryId;", conn);
 
-          cmd.Parameters.Add(new SqlParameter("@CategoryId", this.GetId()));
-          cmd.ExecuteNonQuery();
-          conn.Close();
+            cmd.Parameters.Add(new SqlParameter("@CategoryId", this.GetId()));
+            cmd.ExecuteNonQuery();
+            conn.Close();
         }
 
         public static void DeleteAll()

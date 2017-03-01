@@ -78,7 +78,7 @@ namespace RecipeBox
     }
 
         [Fact]
-        public void Test_AddCourse_AddCategoryToRecipe()
+        public void Test_AddCategory_AddCategoryToRecipe()
         {
         Recipe testRecipe = new Recipe("Chicken Tandoori","Chicken,Onions,Tomato", "Roast Chicken", "30 minutes", 5);
         testRecipe.Save();
