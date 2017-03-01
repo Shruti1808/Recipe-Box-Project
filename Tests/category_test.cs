@@ -50,6 +50,15 @@ namespace RecipeBox
             Assert.Equal(testId, result);
         }
 
+        [Fact]
+        public void Test_FindCategory_ReturnsSameObject()
+        {
+            Category newCategory = new Category("Italian");
+            newCategory.Save();
+
+            Category testCategory = Category.Find(newCategory.GetId());
+            Assert.Equal(testCategory,newCategory);
+        }
 
         public void Dispose()
         {
