@@ -77,6 +77,24 @@ namespace RecipeBox
            Assert.Equal(result, newName);
        }
 
+       [Fact]
+           public void Test_Delete_DeleteSingleCategory()
+           {
+             //Arrange
+             Category testCategory1 = new Category("Italian");
+             testCategory1.Save();
+
+             Category testCategory2 = new Category("Indian");
+             testCategory2.Save();
+
+             //Act
+             testCategory1.DeleteCategory();
+             List<Category> result = Category.GetAll();
+             List<Category> resultList = new List<Category> {testCategory2};
+
+             Assert.Equal(result, resultList);
+           }
+
         public void Dispose()
         {
             Category.DeleteAll();
