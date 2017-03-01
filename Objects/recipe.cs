@@ -139,7 +139,7 @@ namespace RecipeBox
             }
         }
 
-        public static  Recipe Find(int id)
+        public static Recipe Find(int id)
         {
             SqlConnection conn = DB.Connection();
             conn.Open();
