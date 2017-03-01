@@ -21,6 +21,18 @@ namespace RecipeBox
             Assert.Equal(0, result);
         }
 
+        [Fact]
+        public void Test_Equal_ReturnsTrueIfDetailsAreTheSame()
+        {
+            //Arrange, Act
+            Category firstCategory = new Category("Italian");
+            Category secondCategory = new Category("Italian");
+
+            //Assert
+            Assert.Equal(firstCategory, secondCategory);
+        }
+
+
         public void Dispose()
         {
             Category.DeleteAll();

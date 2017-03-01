@@ -25,6 +25,21 @@ namespace RecipeBox
             return _name;
         }
 
+        public override bool Equals(System.Object otherCategory)
+        {
+            if (!(otherCategory is Category))
+            {
+                return false;
+            }
+            else
+            {
+                Category newCategory = (Category) otherCategory;
+                bool idEquality = (this.GetId() == newCategory.GetId());
+                bool nameEquality = (this.GetName()== newCategory.GetName());
+                return (idEquality && nameEquality);
+            }
+        }
+
         public static List<Category> GetAll()
         {
             List<Category> CategoryList = new List<Category>{};
