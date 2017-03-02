@@ -44,6 +44,11 @@ namespace RecipeBox
                 return View["categories.cshtml", AllCategories];
             };
 
+            Get["/recipe/{id}"] = parameters => {
+              Recipe recipe = Recipe.Find(parameters.id);
+              return View["recipe_details.cshtml", recipe];
+            };
+
             Get["/recipe/edit/{id}"] = parameters => {
                 Recipe SelectedRecipe = Recipe.Find(parameters.id);
                 return View["recipe_edit.cshtml", SelectedRecipe];
