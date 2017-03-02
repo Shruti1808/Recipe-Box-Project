@@ -2,8 +2,13 @@
   Layout="Shared/_Layout.cshtml";
 }
 
-<h3>Name: @Model.GetName()</h3>
-<h3>Ingredients: @Model.GetIngredients()</h3>
-<h3>Instructions: @Model.GetInstructions()</h3>
-<h3>Cook Time: @Model.GetTime()</h3>
-<h3>Rating: @Model.GetRating()</h3>
+<h3>Name: @Model["recipe"].GetName()</h3>
+<h3>Ingredients: @Model["recipe"].GetIngredients()</h3>
+<h3>Instructions: @Model["recipe"].GetInstructions()</h3>
+<h3>Cook Time: @Model["recipe"].GetTime()</h3>
+<h3>Rating: @Model["recipe"].GetRating()</h3>
+
+@foreach (var category in Model["recipe"].GetCategories())
+{
+    <h3>Category: @category.GetName()</h3>
+}

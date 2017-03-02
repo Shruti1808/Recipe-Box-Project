@@ -28,8 +28,9 @@ namespace RecipeBox
             };
 
             Post["/recipes"] = _ => {
-                Recipe newRecipe = new Recipe(Request.Form["recipe-name"], Request.Form["ingredients"], Request.Form["instructions"], Request.Form["cook-time"], Request.Form["rating"],Request.Form["category-id"]);
+                Recipe newRecipe = new Recipe(Request.Form["recipe-name"], Request.Form["ingredients"], Request.Form["instructions"], Request.Form["cook-time"], Request.Form["rating"]);
                 newRecipe.Save();
+                newRecipe.AddCategory(Category.Find(Request.Form["category-id"]));
                 List<Recipe> AllRecipes = Recipe.GetAll();
                 return View["recipes.cshtml", AllRecipes];
             };
@@ -46,8 +47,12 @@ namespace RecipeBox
             };
 
             Get["/recipe/{id}"] = parameters => {
-              Recipe recipe = Recipe.Find(parameters.id);
-              return View["recipe_details.cshtml", recipe];
+              Dictionary<string, object> model = new Dictionary<string, object>();
+              var SelectedRecipe = Recipe.Find(parameters.id);
+              var CategoryRecipe = SelectedRecipe.GetCategories();
+              model.Add("recipe", SelectedRecipe);
+              model.Add("categories", CategoryRecipe);
+              return View["recipe_details.cshtml", model];
             };
 
             Get["/recipe/edit/{id}"] = parameters => {
