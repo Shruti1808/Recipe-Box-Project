@@ -23,11 +23,12 @@ namespace RecipeBox
             };
 
             Get["/recipe/new"] = _ => {
-                return View["recipe_form.cshtml"];
+                List<Category> AllCategories = Category.GetAll();
+                return View["recipe_form.cshtml",AllCategories];
             };
 
             Post["/recipes"] = _ => {
-                Recipe newRecipe = new Recipe(Request.Form["recipe-name"], Request.Form["ingredients"], Request.Form["instructions"], Request.Form["cook-time"], Request.Form["rating"]);
+                Recipe newRecipe = new Recipe(Request.Form["recipe-name"], Request.Form["ingredients"], Request.Form["instructions"], Request.Form["cook-time"], Request.Form["rating"],Request.Form["category-id"]);
                 newRecipe.Save();
                 List<Recipe> AllRecipes = Recipe.GetAll();
                 return View["recipes.cshtml", AllRecipes];
