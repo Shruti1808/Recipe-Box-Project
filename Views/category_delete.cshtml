@@ -1,0 +1,15 @@
+@{
+  Layout="Shared/_Layout.cshtml";
+}
+
+<h1>Are you sure you want to delete this category?</h1>
+
+<form action="/category/delete/@Model.GetId()" method="post">
+    <div class="form-group edit-name">
+        <label><h2>@Model.GetName()</h2></label>
+      <input type="hidden" name="_method" value="DELETE">
+    </div>
+<div class="buttons">
+     <button class="btn btn-lg btn-primary" type="submit">Delete</button>
+</div>
+</form>

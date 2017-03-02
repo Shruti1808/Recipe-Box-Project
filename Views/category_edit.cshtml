@@ -1,0 +1,16 @@
+@{
+    Layout="Shared/_Layout.cshtml";
+}
+
+<h2>Edit Category: @Model.GetName()</h2>
+<form action="/category/edit/@Model.GetId()" method="post">
+    <div class="form-group">
+        <input type="hidden" name="_method" value="PATCH">
+        <input name="category-id" type="hidden" value="@Model.GetId()">
+        <label for="category-name">Category Name
+            <input id="category-name" name="category-name" type="text"></label>
+        </div>
+        <div class="buttons">
+            <button class="btn btn-lg btn-primary" type="submit">Edit</button>
+        </div>
+    </form>

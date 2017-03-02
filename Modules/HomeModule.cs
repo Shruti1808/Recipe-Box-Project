@@ -40,7 +40,8 @@ namespace RecipeBox
             Post["/categories"] = _ => {
                 Category newCategory = new Category(Request.Form["category-name"]);
                 newCategory.Save();
-                return View["categories.cshtml"];
+                List<Category> AllCategories = Category.GetAll();
+                return View["categories.cshtml", AllCategories];
             };
 
             Get["/recipe/edit/{id}"] = parameters => {
@@ -69,6 +70,34 @@ namespace RecipeBox
                 SelectedRecipe.DeleteRecipe();
                 List<Recipe> AllRecipes = Recipe.GetAll();
                 return View["recipes.cshtml",AllRecipes];
+            };
+
+            Get["/category/edit/{id}"] = parameters => {
+                Category SelectedCategory = Category.Find(parameters.id);
+                return View["category_edit.cshtml", SelectedCategory];
+            };
+            Patch["/category/edit/{id}"] = parameters => {
+                Category SelectedCategory = Category.Find(parameters.id);
+                SelectedCategory.Update(Request.Form["category-name"]);
+                List<Category> AllCategories = Category.GetAll();
+                return View["categories.cshtml", AllCategories];
+            };
+
+            Post["/categories/delete"] = _ => {
+                Category.DeleteAll();
+                List<Category> AllCategories = Category.GetAll();
+                return View["categories.cshtml", AllCategories];
+            };
+
+            Get["category/delete/{id}"] = parameters => {
+                Category SelectedCategory = Category.Find(parameters.id);
+                return View["category_delete.cshtml", SelectedCategory];
+            };
+            Delete["category/delete/{id}"] = parameters => {
+                Category SelectedCategory = Category.Find(parameters.id);
+                SelectedCategory.DeleteCategory();
+                List<Category> AllCategories = Category.GetAll();
+                return View["categories.cshtml", AllCategories];
             };
 
         }
