@@ -1,17 +1,24 @@
 @{
-  Layout="Shared/_Layout.cshtml";
+    Layout="Shared/_Layout.cshtml";
 }
+<div class="transbox">
+    <fieldset>
+        <div class="form-group">
+            <form action="/categories" method="post">
+                <label for="category-name">Category Name</label>
+                <input id="category-name" class="form-control" name="category-name" type="text">
+            </div>
+            <div class="form-group">
 
-<form action="/categories" method="post">
-  <label for="category-name">Category Name</label>
-  <input id="category-name" name="category-name" type="text">
-  <button class="btn btn-lg btn-primary" type="submit">Add Category</button>
-
-  <label for="category-recipe">Recipe</label>
-  <select  name="recipe-id">
-      @foreach(var recipe in Model)
-      {
-          <option value ="@recipe.GetId()">@recipe.GetName()</option>
-      }
-  </select>
-</form>
+                <label for="category-recipe">Recipe</label>
+                <select class="form-control" name="recipe-id">
+                    @foreach(var recipe in Model)
+                    {
+                        <option value ="@recipe.GetId()">@recipe.GetName()</option>
+                    }
+                </select>
+            </div>
+            <button class="btn btn-lg btn-primary" type="submit">Add Category</button>
+        </form>
+    </fieldset>
+</div>
