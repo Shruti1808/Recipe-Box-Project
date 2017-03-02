@@ -1,37 +1,38 @@
 @{
-  Layout="Shared/_Layout.cshtml";
+    Layout="Shared/_Layout.cshtml";
 }
 <h2>Edit Recipe: @Model.GetName()</h2>
 <form action="/recipe/edit/@Model.GetId()" method="post">
-<div class="form-group">
-  <input type="hidden" name="_method" value="PATCH">
-  <input name="recipe-id" type="hidden" value="@Model.GetId()">
-  <label for="recipe-name">Recipe name
-  <input id="recipe-name" name="recipe-name" type="text"></label>
+    <div class="form-group">
+        <input type="hidden" name="_method" value="PATCH">
+        <input name="recipe-id" type="hidden" value="@Model.GetId()">
+        <label for="recipe-name">Recipe name
+            <input id="recipe-name" name="recipe-name" type="text"></label>
 
-  <label for="ingredients">Ingredients</label>
-  <input id="ingredients" name="ingredients" type="text">
-  <label for="instructions">Instructions</label>
-  <input id="instructions" name="instructions" type="text">
+            <label for="ingredients">Ingredients</label>
+            <input id="ingredients" name="ingredients" type="text">
+            <label for="instructions">Instructions</label>
+            <input id="instructions" name="instructions" type="text">
 
-  <label for="cook-time">Cook Time</label>
-  <select name="cook-time">
-      <option>>15 Minutes</option>
-      <option>30 Minutes</option>
-      <option>45 Minutes</option>
-      <option>60 Minutes +</option>
-  </select>
+            <label for="cook-time">Cook Time</label>
+            <select name="cook-time">
+                <option>>15 Minutes</option>
+                <option>30 Minutes</option>
+                <option>45 Minutes</option>
+                <option>60 Minutes +</option>
+            </select>
 
-  <label for="rating">Rating</label>
-  <select name="rating">
-      <option value=1>1</option>
-      <option value=2>2</option>
-      <option value=3>3</option>
-      <option value=4>4</option>
-      <option value=5>5</option>
-</select>
-  </div>
-<div class="buttons">
-    <button class="btn btn-lg btn-primary" type="submit">Edit</button>
-</div>
-</form>
+            <label for="rating">Rating</label>
+            <select name="rating">
+                <option value=1>1</option>
+                <option value=2>2</option>
+                <option value=3>3</option>
+                <option value=4>4</option>
+                <option value=5>5</option>
+            </select>
+
+        </div>
+        <div class="buttons">
+            <button class="btn btn-lg btn-primary" type="submit">Edit</button>
+        </div>
+    </form>

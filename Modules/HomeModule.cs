@@ -77,7 +77,8 @@ namespace RecipeBox
             };
 
             Get["/category/new"] = _ => {
-                return View["category_form.cshtml"];
+                List<Recipe> AllRecipes = Recipe.GetAll();
+                return View["category_form.cshtml", AllRecipes];
             };
 
             Post["/categories"] = _ => {
