@@ -1,0 +1,10 @@
+@{
+    Layout="Shared/_Layout.cshtml";
+}
+
+<h3>Name: @Model["category"].GetName()</h3>
+
+@foreach (var recipe in Model["category"].GetRecipe())
+{
+    <h3><a href="/recipe/@recipe.GetId()">@recipe.GetName()</a></h3>
+}

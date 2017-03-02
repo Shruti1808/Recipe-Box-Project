@@ -12,14 +12,11 @@ namespace RecipeBox
                 return View ["index.cshtml"];
             };
 
+            //For Recipes..............>
+
             Get["/recipes"] = _ => {
                 List<Recipe> AllRecipes = Recipe.GetAll();
                 return View["recipes.cshtml", AllRecipes];
-            };
-
-            Get["/categories"] = _ => {
-                List<Category> AllCategories = Category.GetAll();
-                return View["categories.cshtml", AllCategories];
             };
 
             Get["/recipe/new"] = _ => {
@@ -33,17 +30,6 @@ namespace RecipeBox
                 newRecipe.AddCategory(Category.Find(Request.Form["category-id"]));
                 List<Recipe> AllRecipes = Recipe.GetAll();
                 return View["recipes.cshtml", AllRecipes];
-            };
-
-            Get["/category/new"] = _ => {
-                return View["category_form.cshtml"];
-            };
-
-            Post["/categories"] = _ => {
-                Category newCategory = new Category(Request.Form["category-name"]);
-                newCategory.Save();
-                List<Category> AllCategories = Category.GetAll();
-                return View["categories.cshtml", AllCategories];
             };
 
             Get["/recipe/{id}"] = parameters => {
@@ -82,6 +68,35 @@ namespace RecipeBox
                 List<Recipe> AllRecipes = Recipe.GetAll();
                 return View["recipes.cshtml",AllRecipes];
             };
+
+            //For Categories......................>
+
+            Get["/categories"] = _ => {
+                List<Category> AllCategories = Category.GetAll();
+                return View["categories.cshtml", AllCategories];
+            };
+
+            Get["/category/new"] = _ => {
+                return View["category_form.cshtml"];
+            };
+
+            Post["/categories"] = _ => {
+                Category newCategory = new Category(Request.Form["category-name"]);
+                newCategory.Save();
+                newCategory.AddRecipe(Recipe.Find(Request.Form["recipe-id"]));
+                List<Category> AllCategories = Category.GetAll();
+                return View["categories.cshtml", AllCategories];
+            };
+
+            Get["/category/{id}"] = parameters => {
+              Dictionary<string, object> model = new Dictionary<string, object>();
+              var SelectedCategory = Category.Find(parameters.id);
+              var CategoryRecipe = SelectedCategory.GetRecipe();
+              model.Add("category", SelectedCategory);
+              model.Add("recipe", CategoryRecipe);
+              return View["categories_details.cshtml", model];
+            };
+
 
             Get["/category/edit/{id}"] = parameters => {
                 Category SelectedCategory = Category.Find(parameters.id);

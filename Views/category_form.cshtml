@@ -6,4 +6,12 @@
   <label for="category-name">Category Name</label>
   <input id="category-name" name="category-name" type="text">
   <button class="btn btn-lg btn-primary" type="submit">Add Category</button>
+
+  <label for="category-recipe">Recipe</label>
+  <select  name="recipe-id">
+      @foreach(var recipe in Model)
+      {
+          <option value ="@recipe.GetId()">@recipe.GetName()</option>
+      }
+  </select>
 </form>
