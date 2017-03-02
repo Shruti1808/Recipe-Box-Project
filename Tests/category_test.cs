@@ -83,10 +83,10 @@ namespace RecipeBox
            Category testCategory = new Category("Mexican");
            testCategory.Save();
 
-           Recipe testRecipe = new Recipe("Spaghetti", "Noodles, Sauce", "Boil noodles", "20 Minutes", 5);
+           Recipe testRecipe = new Recipe("Spaghetti", "Noodles, Sauce", "Boil noodles", "20 Minutes", 5, "www.google.com");
            testRecipe.Save();
 
-           Recipe testRecipe2 = new Recipe("Alfredo", "Noodles, Sauce", "Boil noodles", "20 Minutes", 5);
+           Recipe testRecipe2 = new Recipe("Alfredo", "Noodles, Sauce", "Boil noodles", "20 Minutes", 5, "www.google.com");
            testRecipe2.Save();
 
            testCategory.AddRecipe(testRecipe);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Nancy;
 using Nancy.ViewEngines.Razor;
@@ -25,8 +26,9 @@ namespace RecipeBox
             };
 
             Post["/recipes"] = _ => {
-                Recipe newRecipe = new Recipe(Request.Form["recipe-name"], Request.Form["ingredients"], Request.Form["instructions"], Request.Form["cook-time"], Request.Form["rating"]);
+                Recipe newRecipe = new Recipe(Request.Form["recipe-name"], Request.Form["ingredients"], Request.Form["instructions"], Request.Form["cook-time"], Request.Form["rating"], Request.Form["recipe-url"]);
                 newRecipe.Save();
+                Console.WriteLine("The URL is: " + newRecipe.GetUrl());
                 newRecipe.AddCategory(Category.Find(Request.Form["category-id"]));
                 List<Recipe> AllRecipes = Recipe.GetAll();
                 return View["recipes.cshtml", AllRecipes];
@@ -47,7 +49,7 @@ namespace RecipeBox
             };
             Patch["/recipe/edit/{id}"] = parameters => {
                 Recipe SelectedRecipe = Recipe.Find(parameters.id);
-                SelectedRecipe.Update(Request.Form["recipe-name"], Request.Form["ingredients"], Request.Form["instructions"], Request.Form["cook-time"], Request.Form["rating"]);
+                SelectedRecipe.Update(Request.Form["recipe-name"], Request.Form["ingredients"], Request.Form["instructions"], Request.Form["cook-time"], Request.Form["rating"], Request.Form["recipe-url"]);
                 List<Recipe> AllRecipes = Recipe.GetAll();
                 return View["recipes.cshtml", AllRecipes];
             };

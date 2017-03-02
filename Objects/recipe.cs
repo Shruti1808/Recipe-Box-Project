@@ -12,8 +12,9 @@ namespace RecipeBox
         private string _instructions;
         private string _cooktime;
         private int _rating;
+        private string _url;
 
-        public Recipe(string Name, string Ingredients, string Instructions, string CookTime, int Rating, int Id = 0)
+        public Recipe(string Name, string Ingredients, string Instructions, string CookTime, int Rating, string URL, int Id = 0)
         {
             _id = Id;
             _name = Name;
@@ -21,6 +22,7 @@ namespace RecipeBox
             _instructions = Instructions;
             _cooktime = CookTime;
             _rating = Rating;
+            _url = URL;
         }
 
         public int GetId()
@@ -52,6 +54,12 @@ namespace RecipeBox
             return _rating;
         }
 
+        public string GetUrl()
+        {
+            return _url;
+        }
+
+
         public override bool Equals(System.Object otherRecipe)
         {
             if (!(otherRecipe is Recipe))
@@ -67,7 +75,8 @@ namespace RecipeBox
                 bool instructionEquality = (this.GetInstructions() == newRecipe.GetInstructions());
                 bool cookTimeEquality = (this.GetTime() == newRecipe.GetTime());
                 bool ratingEquality = (this.GetRating() == newRecipe.GetRating());
-                return (idEquality && nameEquality && ingredientEquality && instructionEquality && cookTimeEquality && ratingEquality);
+                bool urlEquality = (this.GetUrl() == newRecipe.GetUrl());
+                return (idEquality && nameEquality && ingredientEquality && instructionEquality && cookTimeEquality && ratingEquality && urlEquality);
             }
         }
 
@@ -89,7 +98,9 @@ namespace RecipeBox
                 string recipeInstructions = rdr.GetString(3);
                 string recipeCookTime = rdr.GetString(4);
                 int recipeRating = rdr.GetInt32(5);
-                Recipe newRecipe = new Recipe(recipeName, recipeIngredients, recipeInstructions, recipeCookTime, recipeRating, recipeId);
+                string recipeUrl = rdr.GetString(6);
+
+                Recipe newRecipe = new Recipe(recipeName, recipeIngredients, recipeInstructions, recipeCookTime, recipeRating, recipeUrl, recipeId);
                 RecipeList.Add(newRecipe);
             }
 
@@ -109,19 +120,21 @@ namespace RecipeBox
             SqlConnection conn = DB.Connection();
             conn.Open();
 
-            SqlCommand cmd = new SqlCommand("INSERT into recipe(name, ingredients, instructions, cook_time, rating) OUTPUT INSERTED.id VALUES (@Name, @Ingredients, @Instructions, @CookTime, @Rating);", conn);
+            SqlCommand cmd = new SqlCommand("INSERT into recipe(name, ingredients, instructions, cook_time, rating, url) OUTPUT INSERTED.id VALUES (@Name, @Ingredients, @Instructions, @CookTime, @Rating, @Url);", conn);
 
             SqlParameter recipeNameParam = new SqlParameter("@Name", this.GetName());
             SqlParameter recipeIngredientsParam = new SqlParameter("@Ingredients", this.GetIngredients());
             SqlParameter recipeInstructionsParam = new SqlParameter("@Instructions", this.GetInstructions());
             SqlParameter recipeCookTimeParam = new SqlParameter("@CookTime", this.GetTime());
             SqlParameter recipeRatingParam = new SqlParameter("@Rating", this.GetRating());
+            SqlParameter recipeUrlParam = new SqlParameter("@Url", this.GetUrl());
 
             cmd.Parameters.Add(recipeNameParam);
             cmd.Parameters.Add(recipeIngredientsParam);
             cmd.Parameters.Add(recipeInstructionsParam);
             cmd.Parameters.Add(recipeCookTimeParam);
             cmd.Parameters.Add(recipeRatingParam);
+            cmd.Parameters.Add(recipeUrlParam);
 
             SqlDataReader rdr = cmd.ExecuteReader();
 
@@ -159,6 +172,7 @@ namespace RecipeBox
             string foundInstructions = null;
             string foundCookTime = null;
             int foundRating = 0;
+            string foundUrl = null;
 
             while(rdr.Read())
             {
@@ -168,9 +182,10 @@ namespace RecipeBox
                 foundInstructions = rdr.GetString(3);
                 foundCookTime = rdr.GetString(4);
                 foundRating = rdr.GetInt32(5);
+                foundUrl = rdr.GetString(6);
             }
 
-            Recipe foundRecipe = new Recipe(foundName, foundIngredients, foundInstructions, foundCookTime, foundRating, foundRecipeId);
+            Recipe foundRecipe = new Recipe(foundName, foundIngredients, foundInstructions, foundCookTime, foundRating, foundUrl, foundRecipeId);
             if (rdr != null)
             {
                 rdr.Close();
@@ -183,18 +198,19 @@ namespace RecipeBox
             return foundRecipe;
         }
 
-    public void Update(string newName, string newIngredients, string newInstructions, string newCookTime, int newRating)
+    public void Update(string newName, string newIngredients, string newInstructions, string newCookTime, int newRating, string newUrl)
     {
         SqlConnection conn = DB.Connection();
         conn.Open();
 
-        SqlCommand cmd = new SqlCommand("UPDATE recipe SET name = @NewName, ingredients = @NewIngredients, instructions = @NewInstructions, cook_time = @NewCookTime, rating = @NewRating OUTPUT INSERTED.* WHERE id = @RecipeId;", conn);
+        SqlCommand cmd = new SqlCommand("UPDATE recipe SET name = @NewName, ingredients = @NewIngredients, instructions = @NewInstructions, cook_time = @NewCookTime, rating = @NewRating, url=@NewUrl OUTPUT INSERTED.* WHERE id = @RecipeId;", conn);
 
         SqlParameter newNameParam = new SqlParameter("@NewName", newName);
         SqlParameter newIngredientsParam = new SqlParameter("@NewIngredients", newIngredients);
         SqlParameter newInstructionsParam = new SqlParameter("@NewInstructions", newInstructions);
         SqlParameter newCookTimeParam = new SqlParameter("@NewCookTime", newCookTime);
         SqlParameter newRatingParam = new SqlParameter("@NewRating", newRating);
+        SqlParameter newUrlParam = new SqlParameter("@NewUrl", newUrl);
         SqlParameter idParam = new SqlParameter("@RecipeId", this.GetId());
 
         cmd.Parameters.Add(newNameParam);
@@ -202,6 +218,7 @@ namespace RecipeBox
         cmd.Parameters.Add(newInstructionsParam);
         cmd.Parameters.Add(newCookTimeParam);
         cmd.Parameters.Add(newRatingParam);
+        cmd.Parameters.Add(newUrlParam);
         cmd.Parameters.Add(idParam);
 
         SqlDataReader rdr = cmd.ExecuteReader();
@@ -214,6 +231,7 @@ namespace RecipeBox
             this._instructions = rdr.GetString(3);
             this._cooktime = rdr.GetString(4);
             this._rating = rdr.GetInt32(5);
+            this._url = rdr.GetString(6);
         }
             if (rdr != null)
             {

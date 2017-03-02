@@ -208,7 +208,8 @@ namespace RecipeBox
                 string matchedInstructions = rdr.GetString(3);
                 string matchedCookTIme =  rdr.GetString(4);
                 int matchedRating = rdr.GetInt32(5);
-                Recipe newRecipe = new Recipe(matchedrecipeName,matchedIngredient,matchedInstructions,matchedCookTIme,matchedRating,matchedRecipeId);
+                string matchedUrl = rdr.GetString(6);
+                Recipe newRecipe = new Recipe(matchedrecipeName, matchedIngredient, matchedInstructions, matchedCookTIme, matchedRating, matchedUrl, matchedRecipeId);
                 RecipeList.Add(newRecipe);
             }
 
