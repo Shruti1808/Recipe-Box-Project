@@ -27,9 +27,9 @@ namespace RecipeBox
             };
 
             Post["/recipes"] = _ => {
-                List<Recipe> AllRecipes = Recipe.GetAll();
                 Recipe newRecipe = new Recipe(Request.Form["recipe-name"], Request.Form["ingredients"], Request.Form["instructions"], Request.Form["cook-time"], Request.Form["rating"]);
                 newRecipe.Save();
+                List<Recipe> AllRecipes = Recipe.GetAll();
                 return View["recipes.cshtml", AllRecipes];
             };
 
@@ -41,6 +41,34 @@ namespace RecipeBox
                 Category newCategory = new Category(Request.Form["category-name"]);
                 newCategory.Save();
                 return View["categories.cshtml"];
+            };
+
+            Get["/recipe/edit/{id}"] = parameters => {
+                Recipe SelectedRecipe = Recipe.Find(parameters.id);
+                return View["recipe_edit.cshtml", SelectedRecipe];
+            };
+            Patch["/recipe/edit/{id}"] = parameters => {
+                Recipe SelectedRecipe = Recipe.Find(parameters.id);
+                SelectedRecipe.Update(Request.Form["recipe-name"], Request.Form["ingredients"], Request.Form["instructions"], Request.Form["cook-time"], Request.Form["rating"]);
+                List<Recipe> AllRecipes = Recipe.GetAll();
+                return View["recipes.cshtml", AllRecipes];
+            };
+
+            Post["/recipes/delete"] = _ => {
+                Recipe.DeleteAll();
+                List<Recipe> AllRecipes = Recipe.GetAll();
+                return View["recipes.cshtml",AllRecipes];
+            };
+
+            Get["recipe/delete/{id}"] = parameters => {
+                Recipe SelectedRecipe = Recipe.Find(parameters.id);
+                return View["recipe_delete.cshtml", SelectedRecipe];
+            };
+            Delete["recipe/delete/{id}"] = parameters => {
+                Recipe SelectedRecipe = Recipe.Find(parameters.id);
+                SelectedRecipe.DeleteRecipe();
+                List<Recipe> AllRecipes = Recipe.GetAll();
+                return View["recipes.cshtml",AllRecipes];
             };
 
         }
