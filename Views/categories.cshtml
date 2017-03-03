@@ -6,12 +6,10 @@
 {
   <p>No categories have been added yet!</p>
 }
-  <ul>
     @foreach (var category in Model)
     {
-      <li><a href="/category/@category.GetId()">@category.GetName()</a> | <a href="/category/edit/@category.GetId()">Edit</a> | <a href="/category/delete/@category.GetId()">Delete</a></li>
+      <h2><a href="/category/@category.GetId()">@category.GetName()</a> | <a href="/category/edit/@category.GetId()">Edit</a> | <a href="/category/delete/@category.GetId()">Delete</a></h2>
     }
-  </ul>
   <form action="/categories/delete" method="post">
     <button class="btn btn-lg btn-primary" type="submit">Clear All</button>
   </form>

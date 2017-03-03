@@ -28,13 +28,19 @@ div.transbox {
     border: 1px solid white;
     position: relative;
 }*/
+.img-circle {
+    border-radius: 80%;
+}
+
 
 .navbar {
     height: 70px;
 }
 
-.food .img-circle {
-    /*width: 45%;*/
+a {
+    color: white;
+}
 
-
+.food {
+    float: inherit;
 }
