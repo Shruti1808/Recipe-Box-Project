@@ -6,12 +6,16 @@
 {
   <p>No recipes have been added yet!</p>
 }
+
+<div class="food">
   <ul>
     @foreach (var recipe in Model)
     {
       <li><a href="/recipe/@recipe.GetId()">@recipe.GetName()</a> | <a href="/recipe/edit/@recipe.GetId()">Edit</a> | <a href="/recipe/delete/@recipe.GetId()">Delete</a></li>
+      <img class="img-circle" src="@recipe.GetUrl()"/>
     }
   </ul>
+  </div>
   <form action="/recipes/delete" method="post">
     <button class="btn btn-lg btn-primary" type="submit">Clear All</button>
   </form>
